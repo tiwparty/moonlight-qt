@@ -1534,6 +1534,19 @@ int main(int argc, char *argv[])
                 QFontDatabase::setApplicationFallbackFontFamilies(QChar::Script_Han,
                                                                   hanFallbackFamilies);
             }
+
+            // Same for Thai: otherwise Windows picks a legacy Thai font that
+            // renders much smaller than Manrope.
+            QStringList thaiFallbackFamilies;
+            for (const QString &family : UiFont::systemThaiFallbackFamilies()) {
+                if (installedFamilies.contains(family)) {
+                    thaiFallbackFamilies << family;
+                }
+            }
+            if (!thaiFallbackFamilies.isEmpty()) {
+                QFontDatabase::setApplicationFallbackFontFamilies(QChar::Script_Thai,
+                                                                  thaiFallbackFamilies);
+            }
 #endif
 
             SDL_LogInfo(SDL_LOG_CATEGORY_APPLICATION, "UI font families: %s",
